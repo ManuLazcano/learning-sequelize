@@ -1,18 +1,5 @@
-import { Sequelize, DataTypes } from 'sequelize'
-
-// Conección a una base de datos
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'database.sqlite'
-})
-
-// Probar la conección
-try {
-  await sequelize.authenticate()
-  console.log('Connection has been established successfully.')
-} catch (error) {
-  console.error('Unable to connect to the database:', error)
-}
+import { DataTypes } from 'sequelize'
+import { sequelize } from './1-config.js'
 
 // Definición de un modelo
 const User = sequelize.define('User', {
