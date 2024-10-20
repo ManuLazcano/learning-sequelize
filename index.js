@@ -21,24 +21,32 @@ const User = sequelize.define('User', {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
-  firstName: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  lastName: DataTypes.STRING,
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  }
+  favoriteColor: DataTypes.STRING,
+  age: DataTypes.INTEGER
 })
 
 // Sicronizar el todos los modelos con la base de datos
-sequelize.sync()
-  .then(() => console.log('The table for the User model was just created'))
-  .catch((error) => console.log('Error synchronizing database: ', error))
-
 /** TIP:
  * sync({ force: true }) y sync({ alter: true })
  * Son operaciones destructivas, en producción se recomienda realizar la sincronización con el concepto de migraciones
 */
+await sequelize.sync({ force: true })
+console.log('The table for the User model was just created')
+
+// Crear una instancia
+const jane = await User.create({ name: 'Jane' })
+console.log('Jane was saved to yhe database')
+
+console.log(jane.toJSON())
+
+// Actualizar una instancia
+await jane.update({ age: 25, favoriteColor: 'red' })
+console.log('Age and favoriteColor updated')
+console.log(jane.toJSON())
+
+// Eliminar una instancia
+// await jane.destroy()
