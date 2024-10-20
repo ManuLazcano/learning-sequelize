@@ -22,14 +22,14 @@ Bar.belongsTo(Foo)
 // Personalizar la foreign key
 Foo.hasOne(Bar)
 Bar.belongsTo(Foo, {
-  foreignKey: 'user_id'
+  foreignKey: 'foo_id'
 })
 
 // Para el tipo de dato UUID
 Foo.hasOne(Bar)
 Bar.belongsTo(Foo, {
   foreignKey: {
-    name: 'user_id',
+    name: 'foo_id',
     type: DataTypes.UUID
   }
 })
@@ -39,7 +39,7 @@ Bar.belongsTo(Foo, {
 Foo.hasOne(Bar)
 Bar.belongsTo(Foo, {
   foreignKey: {
-    name: 'user_id',
+    name: 'foo_id',
     type: DataTypes.UUID,
     allowNull: false
   }
