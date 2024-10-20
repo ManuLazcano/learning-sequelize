@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "dependencies": {
+    "sequelize": "6.37.4",
+    "sqlite3": "5.1.7"
+  },
+  "devDependencies": {
+    "standard": "17.1.2"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}
