@@ -19,14 +19,19 @@ const User = sequelize.define('User', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
-    primaryKey: true
+    primaryKey: true,
+    allowNull: false
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false
   },
   favoriteColor: DataTypes.STRING,
-  age: DataTypes.INTEGER
+  age: DataTypes.INTEGER,
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  }
 })
 
 // Sicronizar el todos los modelos con la base de datos
@@ -37,16 +42,53 @@ const User = sequelize.define('User', {
 await sequelize.sync({ force: true })
 console.log('The table for the User model was just created')
 
-// Crear una instancia
+// INSERT simple
 const jane = await User.create({ name: 'Jane' })
-console.log('Jane was saved to yhe database')
 
-console.log(jane.toJSON())
+/** TIP:
+ * Es posible definir que atributos se pueden establecer en 'create'
+ * Es útil para crear entradas basadas en formularios del usuario
+*/
+const david = await User.create(
+  {
+    name: 'David',
+    isAdmin: true
+  },
+  { fields: ['name'] }
+)
 
-// Actualizar una instancia
-await jane.update({ age: 25, favoriteColor: 'red' })
-console.log('Age and favoriteColor updated')
-console.log(jane.toJSON())
+// SELECT simple
+const users = await User.findAll()
+// console.log('All users: ', JSON.stringify(users, null, 2))
 
-// Eliminar una instancia
-// await jane.destroy()
+// SELECT con WHERE
+const infoDavid = david.toJSON()
+const data = await User.findAll({
+  where: { id: infoDavid.id }
+})
+// console.log(JSON.stringify(data, null, 2))
+
+// UPDATE
+await User.update(
+  { name: 'Otro nombre' },
+  {
+    where: { name: 'Jane' }
+  }
+)
+
+// DELETE
+await User.destroy({
+  where: {
+    id: infoDavid.id
+  }
+})
+
+// bulkCreate (No ejecuta las validaciones en cada objeto, que si hace 'create', se debe pasar 'validate: true')
+const groupOne = await User.bulkCreate([
+  { name: 'Mario' },
+  { name: 'Liz' },
+  { name: 'Pedro' }
+], {
+  validate: true,
+  fields: ['id', 'name']
+})
