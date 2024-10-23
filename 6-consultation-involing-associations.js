@@ -30,7 +30,7 @@ console.log('Name: ', awesomeCaptain?.name)
 console.log('Skill Level: ', awesomeCaptain?.skillLevel)
 
 // Ahora necesitamos la información de su barco
-const hisShip = await awesomeCaptain?.getShip()
+const hisShip = await awesomeCaptain?.getShip() // Las instancias obtenidas con lazy loading obtienen un método 'getModelName'
 console.log('Ship Name: ', hisShip?.name)
 console.log('Amount of Sails: ', hisShip?.amountOfSails)
 
