@@ -46,3 +46,28 @@ console.log('Name: ', anotherAwesomeCaptain?.name)
 console.log('Skill Level: ', anotherAwesomeCaptain?.skillLevel)
 console.log('Ship Name: ', anotherAwesomeCaptain?.ship?.name)
 console.log('Amount of Sails: ', anotherAwesomeCaptain?.ship?.amountOfSails)
+
+// ------ ------ Definir un alias ------ ------
+Ship.belongsTo(Captain, { as: 'leader' }) // Crea la foreign key 'leaderId' en el barco
+
+// Eager Loading no funcionara pasando el modelo
+console.log((await Ship.findAll({ include: Captain })).toJSON()) // Throws an error
+// Se debe pasar el alias
+console.log((await Ship.findAll({ include: 'leader' })).toJSON())
+// También se puede pasar un objeto que especifique el nombre del modelo y el alias
+console.log(
+  (
+    await Ship.findAll({
+      include: {
+        model: Captain,
+        as: 'leader'
+      }
+    })
+  ).toJSON()
+)
+
+/** También se podría definir el alias y la foreign key */
+Ship.belongsTo(Captain, { as: 'leader', foreignKey: 'bossId' }) // Crea la foreign key `bossId`
+
+// Se debe usar el alias o pasar un objeto
+console.log((await Ship.findAll({ include: 'leader' })).toJSON())
